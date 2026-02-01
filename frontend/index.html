@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Clothing Origin Finder</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <header class="top-bar">
+      <div class="logo">AI Clothing Origin Finder</div>
+
+      <button id="headerLoginBtn" class="login-btn" onclick="headerAuthAction()">Login</button>
+    </header>
+
+  <div class="container">
+    <h1>AI Clothing Origin Finder</h1>
+    <p>Upload an image and let AI find similar clothing online.</p>
+
+    <div id="userInfo" style="margin-bottom: 20px; font-size: 14px; color: #888;"></div>
+
+    <input type="file" id="imageInput" accept="image/*" />
+    <button onclick="uploadImage()">Upload & Analyse</button>
+
+    <div id="status"></div>
+    <div id="results"></div>
+  </div>
+
+  <script src="script.js"></script>
+
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeLogin()">&times;</span>
+
+        <h2>Welcome back</h2>
+        <p class="subtext">Login is optional — you can still use the app without it.</p>
+
+        <input id="emailInput" type="email" placeholder="Email" />
+        <input id="passwordInput" type="password" placeholder="Password" />
+
+        <button id="modalLoginBtn" type="button" class="modal-login-btn" disabled onclick="handleModalLogin()">Login</button>
+
+        <p class="hint">No account? Just close this and continue as a guest.</p>
+  </div>
+</div>
+
+</body>
+</html>
