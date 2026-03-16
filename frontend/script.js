@@ -16,7 +16,7 @@ async function uploadImage() {
   formData.append("file", input.files[0]);
 
   try {
-    const response = await fetch("/upload", {
+    const response = await fetch(window.location.origin + "/upload", {
       method: "POST",
       body: formData
     });
@@ -107,7 +107,7 @@ async function handleLogin() {
   const messageDiv = document.getElementById("loginMessage");
 
   try {
-    const response = await fetch("/auth/login", {
+    const response = await fetch(window.location.origin + "/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })
@@ -133,7 +133,7 @@ async function handleRegister() {
   const messageDiv = document.getElementById("registerMessage");
 
   try {
-    const response = await fetch("/auth/register", {
+    const response = await fetch(window.location.origin + "/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })
