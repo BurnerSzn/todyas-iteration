@@ -21,11 +21,19 @@ async function uploadImage() {
       body: formData
     });
 
-    const data = await response.json();
+    let data;
+    const text = await response.text();
+    try {
+      data = text ? JSON.parse(text) : null;
+    } catch (e) {
+      data = null;
+    }
+
     if (!response.ok) {
       const message =
         data?.detail ||
         data?.message ||
+        text ||
         `HTTP ${response.status} ${response.statusText || ""}`.trim();
       throw new Error(message);
     }
