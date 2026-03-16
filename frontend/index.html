@@ -36,11 +36,6 @@
     <div class="modal-content">
       <span class="close" onclick="closeLogin()">&times;</span>
 
-      <div class="auth-tabs">
-        <button id="loginTab" class="tab active" onclick="showLogin()">Login</button>
-        <button id="registerTab" class="tab" onclick="showRegister()">Register</button>
-      </div>
-
       <div id="loginForm">
         <h2>Welcome back</h2>
         <p class="subtext">Login is optional — you can continue as a guest.</p>
@@ -52,6 +47,9 @@
           Login
         </button>
         <div id="loginMessage"></div>
+        <p class="subtext" style="margin-top: 10px;">
+          Don't have an account? <a href="#" onclick="showRegister(); return false;">Register here</a>
+        </p>
       </div>
 
       <div id="registerForm" style="display: none;">
@@ -65,6 +63,9 @@
           Register
         </button>
         <div id="registerMessage"></div>
+        <p class="subtext" style="margin-top: 10px;">
+          Already have an account? <a href="#" onclick="showLogin(); return false;">Login here</a>
+        </p>
       </div>
     </div>
   </div>
