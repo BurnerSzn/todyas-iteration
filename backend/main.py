@@ -13,7 +13,7 @@ import os
 import requests
 
 DATABASE = "./users.db"
-SECRET_KEY = "change-me-to-a-secure-random-string"
+SECRET_KEY = os.getenv("SECRET_KEY", "change-me-to-a-secure-random-string")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
