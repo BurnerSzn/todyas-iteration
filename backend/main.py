@@ -30,9 +30,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Serve static files from frontend directory
-app.mount("/", StaticFiles(directory="../frontend", html=True), name="static")
-
 
 def init_db():
     conn = sqlite3.connect(DATABASE)
@@ -216,5 +213,5 @@ async def upload_image(file: UploadFile = File(...)):
     }
 
 
-
-
+# Serve static files from frontend directory (added last so routes take precedence)
+app.mount("/", StaticFiles(directory="../frontend", html=True), name="static")
