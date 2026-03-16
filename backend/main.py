@@ -1,4 +1,5 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException, status, Depends
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 from passlib.context import CryptContext
@@ -28,6 +29,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Serve static files from frontend directory
+app.mount("/", StaticFiles(directory="../frontend", html=True), name="static")
 
 
 def init_db():
