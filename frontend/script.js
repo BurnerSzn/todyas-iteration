@@ -16,7 +16,7 @@ async function uploadImage() {
   formData.append("file", input.files[0]);
 
   try {
-    const response = await fetch("http://127.0.0.1:8000/upload", {
+    const response = await fetch(window.location.origin + "/upload", {
       method: "POST",
       body: formData
     });
