@@ -189,6 +189,26 @@ body {
   color: #ddd;
 }
 
+/* Auth Tabs */
+.auth-tabs {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  background: #f0f0f0;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.tab.active {
+  background: #111;
+  color: #fff;
+}
+
 /* High Contrast Mode */
 body.high-contrast {
   background: #000;

@@ -36,15 +36,36 @@
     <div class="modal-content">
       <span class="close" onclick="closeLogin()">&times;</span>
 
-      <h2>Welcome back</h2>
-      <p class="subtext">Login is optional — you can continue as a guest.</p>
+      <div class="auth-tabs">
+        <button id="loginTab" class="tab active" onclick="showLogin()">Login</button>
+        <button id="registerTab" class="tab" onclick="showRegister()">Register</button>
+      </div>
 
-      <input id="emailInput" type="email" placeholder="Email" />
-      <input id="passwordInput" type="password" placeholder="Password (8+ chars)" />
+      <div id="loginForm">
+        <h2>Welcome back</h2>
+        <p class="subtext">Login is optional — you can continue as a guest.</p>
 
-      <button id="modalLoginBtn" class="modal-login-btn" disabled onclick="handleModalLogin()">
-        Login
-      </button>
+        <input id="loginEmailInput" type="email" placeholder="Email" />
+        <input id="loginPasswordInput" type="password" placeholder="Password" />
+
+        <button id="modalLoginBtn" class="modal-login-btn" disabled onclick="handleLogin()">
+          Login
+        </button>
+        <div id="loginMessage"></div>
+      </div>
+
+      <div id="registerForm" style="display: none;">
+        <h2>Create account</h2>
+        <p class="subtext">Join to save your searches.</p>
+
+        <input id="registerEmailInput" type="email" placeholder="Email" />
+        <input id="registerPasswordInput" type="password" placeholder="Password (8+ chars)" />
+
+        <button id="modalRegisterBtn" class="modal-login-btn" disabled onclick="handleRegister()">
+          Register
+        </button>
+        <div id="registerMessage"></div>
+      </div>
     </div>
   </div>
 
