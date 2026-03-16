@@ -8,6 +8,8 @@ from typing import Optional
 import time
 import random
 from datetime import datetime, timedelta
+import os
+import requests
 
 DATABASE = "./users.db"
 SECRET_KEY = "change-me-to-a-secure-random-string"
@@ -41,6 +43,21 @@ def init_db():
     """)
     conn.commit()
     conn.close()
+
+def load_env_file(path: str) -> None:
+    if not os.path.exists(path):
+        return
+    with open(path, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            key = key.strip()
+            value = value.strip().strip('"').strip("'")
+            os.environ.setdefault(key, value)
+
+load_env_file(os.path.join(os.path.dirname(__file__), ".env"))
 
 
 def get_user_by_email(email: str) -> Optional[dict]:
@@ -136,32 +153,57 @@ def login(payload: LoginIn):
     return {"access_token": access_token, "token_type": "bearer"}
 
 
+SERPAPI_KEY = os.getenv("SERPAPI_KEY")
+SERPAPI_URL = "https://serpapi.com/search.json"
+
+def search_products(query: str):
+    if not SERPAPI_KEY:
+        raise HTTPException(status_code=500, detail="Missing SERPAPI_KEY")
+
+    params = {
+        "engine": "google_shopping",
+        "q": query,
+        "hl": "en",
+        "gl": "uk",
+        "api_key": SERPAPI_KEY
+    }
+
+    r = requests.get(SERPAPI_URL, params=params, timeout=30)
+    if not r.ok:
+        raise HTTPException(status_code=502, detail="Search API error")
+
+    data = r.json()
+    results = []
+
+    for item in data.get("shopping_results", [])[:6]:
+        results.append({
+            "item": item.get("title", "Unknown item"),
+            "store": item.get("source", "Unknown"),
+            "price": item.get("price", "N/A"),
+            "link": item.get("link", ""),
+            "thumbnail": item.get("thumbnail", "")
+        })
+
+    return results
+
+
 @app.post("/upload")
 async def upload_image(file: UploadFile = File(...)):
-    # mock processing delay
-    time.sleep(2)
+    if file.content_type not in ["image/jpeg", "image/png"]:
+        raise HTTPException(status_code=400, detail="Invalid file type")
 
-    fake_results = [
-        {
-            "item": "Black Hoodie",
-            "store": "ASOS",
-            "price": "£35"
-        },
-        {
-            "item": "Streetwear Hoodie",
-            "store": "ZARA",
-            "price": "£29.99"
-        },
-        {
-            "item": "Oversized Hoodie",
-            "store": "H&M",
-            "price": "£24.99"
-        }
-    ]
+    await file.read()  # prove upload works
+
+    query = "black hoodie men"  # fallback keywords
+    results = search_products(query)
 
     return {
-        "filename": file.filename,
-        "prediction": "Hoodie",
-        "confidence": round(random.uniform(0.75, 0.95), 2),
-        "results": fake_results
+        "prediction": "hoodie ",
+        "confidence": 85,
+        "query_used": query,
+        "results": results
     }
+
+
+
+
