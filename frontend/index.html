@@ -36,37 +36,15 @@
     <div class="modal-content">
       <span class="close" onclick="closeLogin()">&times;</span>
 
-      <div id="loginForm">
-        <h2>Welcome back</h2>
-        <p class="subtext">Login is optional — you can continue as a guest.</p>
+      <h2>Welcome back</h2>
+      <p class="subtext">Login is optional — you can continue as a guest.</p>
 
-        <input id="loginEmailInput" type="email" placeholder="Email" />
-        <input id="loginPasswordInput" type="password" placeholder="Password" />
+      <input id="emailInput" type="email" placeholder="Email" />
+      <input id="passwordInput" type="password" placeholder="Password (8+ chars)" />
 
-        <button id="modalLoginBtn" class="modal-login-btn" disabled onclick="handleLogin()">
-          Login
-        </button>
-        <div id="loginMessage"></div>
-        <p class="subtext" style="margin-top: 10px;">
-          Don't have an account? <a href="#" onclick="showRegister(); return false;">Register here</a>
-        </p>
-      </div>
-
-      <div id="registerForm" style="display: none;">
-        <h2>Create account</h2>
-        <p class="subtext">Join to save your searches.</p>
-
-        <input id="registerEmailInput" type="email" placeholder="Email" />
-        <input id="registerPasswordInput" type="password" placeholder="Password (8+ chars)" />
-
-        <button id="modalRegisterBtn" class="modal-login-btn" disabled onclick="handleRegister()">
-          Register
-        </button>
-        <div id="registerMessage"></div>
-        <p class="subtext" style="margin-top: 10px;">
-          Already have an account? <a href="#" onclick="showLogin(); return false;">Login here</a>
-        </p>
-      </div>
+      <button id="modalLoginBtn" class="modal-login-btn" disabled onclick="handleModalLogin()">
+        Login
+      </button>
     </div>
   </div>
 

@@ -1,7 +1,5 @@
-// Helper function to get API base URL
-function getApiBaseUrl() {
-  return window.location.hostname === 'localhost' ? 'http://127.0.0.1:8000' : window.location.origin;
-}
+// upload 
+async function uploadImage() {
   const input = document.getElementById("imageInput");
   const status = document.getElementById("status");
   const results = document.getElementById("results");
@@ -18,7 +16,7 @@ function getApiBaseUrl() {
   formData.append("file", input.files[0]);
 
   try {
-    const response = await fetch(getApiBaseUrl() + "/upload", {
+    const response = await fetch("http://127.0.0.1:8000/upload", {
       method: "POST",
       body: formData
     });
@@ -80,85 +78,26 @@ window.onclick = function (e) {
 
 //  Login
 function validateLogin() {
-  const email = document.getElementById("loginEmailInput").value.trim();
-  const pwd = document.getElementById("loginPasswordInput").value;
+  const email = document.getElementById("emailInput").value.trim();
+  const pwd = document.getElementById("passwordInput").value;
   document.getElementById("modalLoginBtn").disabled =
     !(email.includes("@") && pwd.length >= 8);
 }
 
-function validateRegister() {
-  const email = document.getElementById("registerEmailInput").value.trim();
-  const pwd = document.getElementById("registerPasswordInput").value;
-  document.getElementById("modalRegisterBtn").disabled =
-    !(email.includes("@") && pwd.length >= 8);
-}
+function handleModalLogin() {
+  const email = document.getElementById("emailInput").value.trim();
 
-function showLogin() {
-  document.getElementById("loginForm").style.display = "block";
-  document.getElementById("registerForm").style.display = "none";
-}
+  document.getElementById("userInfo").innerText =
+    `Logged in as: ${email}`;
 
-function showRegister() {
-  document.getElementById("loginForm").style.display = "none";
-  document.getElementById("registerForm").style.display = "block";
-}
-
-async function handleLogin() {
-  const email = document.getElementById("loginEmailInput").value.trim();
-  const password = document.getElementById("loginPasswordInput").value;
-  const messageDiv = document.getElementById("loginMessage");
-
-  try {
-    const response = await fetch(getApiBaseUrl() + "/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password })
-    });
-
-    const data = await response.json();
-    if (response.ok) {
-      localStorage.setItem("token", data.access_token);
-      document.getElementById("userInfo").innerText = `Logged in as: ${email}`;
-      document.querySelector(".login-btn").innerText = "Logged in";
-      closeLogin();
-    } else {
-      messageDiv.innerText = data.detail || "Login failed";
-    }
-  } catch (error) {
-    messageDiv.innerText = "Network error";
-  }
-}
-
-async function handleRegister() {
-  const email = document.getElementById("registerEmailInput").value.trim();
-  const password = document.getElementById("registerPasswordInput").value;
-  const messageDiv = document.getElementById("registerMessage");
-
-  try {
-    const response = await fetch(getApiBaseUrl() + "/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password })
-    });
-
-    const data = await response.json();
-    if (response.ok) {
-      messageDiv.innerText = "Registration successful! Please login.";
-      showLogin();
-    } else {
-      messageDiv.innerText = data.detail || "Registration failed";
-    }
-  } catch (error) {
-    messageDiv.innerText = "Network error";
-  }
+  document.querySelector(".login-btn").innerText = "Logged in";
+  closeLogin();
 }
 
 // ---------- Init ----------
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("loginEmailInput").addEventListener("input", validateLogin);
-  document.getElementById("loginPasswordInput").addEventListener("input", validateLogin);
-  document.getElementById("registerEmailInput").addEventListener("input", validateRegister);
-  document.getElementById("registerPasswordInput").addEventListener("input", validateRegister);
+  document.getElementById("emailInput").addEventListener("input", validateLogin);
+  document.getElementById("passwordInput").addEventListener("input", validateLogin);
   
   // Load contrast preference
   const savedContrast = localStorage.getItem("highContrast");
